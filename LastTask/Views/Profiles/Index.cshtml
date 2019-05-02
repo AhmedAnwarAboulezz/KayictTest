@@ -5,6 +5,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script>
+    $(document).ready(function () {
+        $(".activebtn").click(function () {
+            var x = $(this).data("id");
+            alert(x)
+            $.ajax({
+                url: "@Url.Action("EnableActive", "Profiles")",
+                type: "POST",
+                data: { userid: x, check:0 },
+                traditional: true,
+                success: function (dataa, errorMessage) {
+                    alert(dataa.message)
+                }
+            });
+        });
+        $(".deactivebtn").click(function () {
+            var x = $(this).data("id");
+            alert(x)
+        });
+    });
+
+</script>
 
 
 <h2>Index</h2>
@@ -31,6 +53,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.AspNetUser.PhoneNumber)
             </th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -55,11 +78,22 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.AspNetUser.PhoneNumber)
                 </td>
+                <td>
+                    @if(item.AspNetUser.Status == 0 || item.AspNetUser.Status == null)
+                    {
+                        <button class="btn btn-default activebtn" data-id="@item.UserId"> Activate </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-danger deactivebtn" data-id="@item.UserId">Deactivate</button>
+                    }
+                </td>
             </tr>
         }
 
     </tbody>
 
+    
 
 </table>
 
