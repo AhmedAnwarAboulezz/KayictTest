@@ -9,7 +9,20 @@
     $(document).ready(function () {
         $(".activebtn").click(function () {
             var x = $(this).data("id");
-            alert(x)
+            $.ajax({
+                url: "@Url.Action("EnableActive", "Profiles")",
+                type: "POST",
+                data: { userid: x, check:1 },
+                traditional: true,
+                success: function (dataa, errorMessage) {
+                    alert(dataa.message)
+                    window.location.reload();
+
+                }
+            });
+        });
+        $(".deactivebtn").click(function () {
+            var x = $(this).data("id");
             $.ajax({
                 url: "@Url.Action("EnableActive", "Profiles")",
                 type: "POST",
@@ -17,12 +30,9 @@
                 traditional: true,
                 success: function (dataa, errorMessage) {
                     alert(dataa.message)
+                    window.location.reload();
                 }
             });
-        });
-        $(".deactivebtn").click(function () {
-            var x = $(this).data("id");
-            alert(x)
         });
     });
 

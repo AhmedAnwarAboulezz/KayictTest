@@ -79,8 +79,20 @@ namespace LastTask.Controllers
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
+                                    
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    LastTaskEntities db = new LastTaskEntities();
+                    var userAccess = db.AspNetUsers.Where(c => c.Email == model.Email).FirstOrDefault().Status;
+                    if (userAccess == 0 || userAccess == null)
+                    {
+                        AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                        TempData["error"] = "طلبك قيد المراجعة";
+                        return RedirectToAction("Login", "Account");
+                    }
+                    else
+                    {
+                        return RedirectToLocal(returnUrl);
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:

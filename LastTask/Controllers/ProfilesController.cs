@@ -26,17 +26,17 @@ namespace LastTask.Controllers
             var usersnotactivate = db.Profiles.Where(c => c.AspNetUser.Status == 0 || c.AspNetUser.Status == null).ToList();
             return View();
         }
-        public ActionResult EnableActive(string userid)
+        public ActionResult EnableActive(string userid,int check)
         {
 
             if (userid != "")
             {
                 var userdefault = db.AspNetUsers.Where(c => c.Id == userid).FirstOrDefault();
-                userdefault.Status = 1;
+                userdefault.Status = check;
                 db.Entry(userdefault).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(new { message = "Activate done Successfully" });
+                return Json(new { message = "Process done Successfully" });
             }
             return Json(new { message = "Something went wrong" });
         }
